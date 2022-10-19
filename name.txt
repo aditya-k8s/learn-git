@@ -1,1 +1,11 @@
+<<<<<<< HEAD
 name aditya is chasnging adi
+=======
+sdkjjbskfb skvjbdsvbs sfvbnv
+svnsvlnsl
+vnsolivnsolv
+sfvnslvns
+vnsolvns
+svnslv
+vksvl;klsvvSvmv;
+>>>>>>> 312a23fc6c8e23dbee67b9d7dbb0216b9203f909
