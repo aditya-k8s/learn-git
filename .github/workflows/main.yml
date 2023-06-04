@@ -1,0 +1,38 @@
+name: PHP CI/CD with AWS Deployment
+
+on:
+  push:
+    branches:
+      - main
+      - development
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install rsync
+        run: sudo apt-get install -y rsync sshpass
+
+  deploy_uat:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to UAT
+        if: github.ref == 'refs/heads/development'
+        run: |
+          sshpass -p "${{ secrets.PASSWORD }}" rsync -e 'ssh -o StrictHostKeyChecking=no' -avz --delete-after --exclude '.git/' $GITHUB_WORKSPACE/* "${{ secrets.UAT_SERVER_USERNAME }}"@"${{ secrets.UAT_SSH_HOST }}":"${{ secrets.UAT_SERVER_PATH }}"
+
+  deploy_prod:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to Production
+        if: github.ref == 'refs/heads/main'
+        run: |
+          sshpass -p "${{ secrets.PASSWORD }}" rsync -e 'ssh -o StrictHostKeyChecking=no' -avz --delete-after --exclude '.git/' $GITHUB_WORKSPACE/* "${{ secrets.PROD_SERVER_USERNAME }}"@"${{ secrets.PROD_SSH_HOST }}":"${{ secrets.PROD_SERVER_PATH }}"
