@@ -19,7 +19,7 @@ jobs:
 
   deploy_uat:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu
 
     steps:
       - name: Deploy to UAT
